@@ -1,35 +1,46 @@
-# SDK Extension for OpenJDK 21
+# SDK Extension for OpenJFX 21
 
-This extension contains the OpenJDK 21 Java Runtime Environment (JRE) and Java Developement Kit (JDK).
+This extension contains the OpenJFX 21 jmods.
 
-OpenJDK 21 is the current latest version. This is *not* a long-term support (LTS) version and will be periodically updated as new JDKs are released.
-
-For the current LTS version, see the [OpenJDK 17](https://github.com/flathub/org.freedesktop.Sdk.Extension.openjdk17) extension.
-
-For the previous LTS version, see the [OpenJDK 11](https://github.com/flathub/org.freedesktop.Sdk.Extension.openjdk11) extension.
+OpenJFX 21 is the current latest version. This is *not* a long-term support (LTS) version and will be periodically updated as new JFX are released.
 
 ## Usage
 
-You can bundle the JRE with your Flatpak application by adding this SDK extension to your Flatpak manifest and calling the install.sh script. For example:
+You can create your own JavaFX custom runtime images (JRE) for your Flatpak application by adding this SDK extension to your Flatpak manifest along with an openjdk extension. For example:
 
 ```
-{
-  "id" : "org.example.MyApp",
-  "branch" : "1.0",
-  "runtime" : "org.freedesktop.Platform",
-  "runtime-version" : "22.08",
-  "sdk" : "org.freedesktop.Sdk",
-  "sdk-extensions" : [ "org.freedesktop.Sdk.Extension.openjdk" ],
-  "modules" : [ {
-    "name" : "openjdk",
-    "buildsystem" : "simple",
-    "build-commands" : [ "/usr/lib/sdk/openjdk/install.sh" ]
-  }, {
-    "name" : "myapp",
-    "buildsystem" : "simple",
-    ....
-  } ]
-  ....
-  "finish-args" : [ "--env=PATH=/app/jre/bin:/usr/bin" ]
-}
+id: org.example.MyApp
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk
+  - org.freedesktop.Sdk.Extension.openjfx
+separate-locales: false
+
+finish-args:
+  - --device=dri
+  - --filesystem=home
+  - --socket=x11
+
+modules:
+  - name: cri
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk/bin/jlink 
+        --verbose 
+        --ignore-signing-information 
+        --no-header-files 
+        --no-man-pages 
+        --strip-debug 
+        --compress zip-9 
+        --module-path /usr/lib/sdk/openjfx/jmods 
+        --add-modules javafx.controls
+        --output /app/cri
+    build-options:
+      no-debuginfo: true
+
+  - name: the_app
+    buildsystem: simple
+    build-commands:
 ```

@@ -8,14 +8,14 @@
     <summary>The latest version of the OpenJFX jmods</summary>
     <description>
         <p>
-            This SDK extension allows the building JavaFX applications.
+            This SDK extension allows the building custom runtime images with jmods for JavaFX.
         </p>
     </description>
-    <url type="homepage">https://openjdk.java.net/</url>
-    <url type="bugtracker">https://bugs.openjdk.java.net/</url>
+    <url type="homepage">https://wiki.openjdk.org/display/OpenJFX/Main/</url>
+    <url type="bugtracker">https://bugs.openjdk.org/</url>
     <developer_name>Patrik Karlström</developer_name>
     <update_contact>patrik@trixon.se</update_contact>
     <releases>
-        <release version="jfx-21.0.2+13" date="2024-01-23"/>
+        <release version="jfx-21.0.2+1" date="2024-01-16"/>
     </releases>
 </component>
