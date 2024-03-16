@@ -1,0 +1,43 @@
+id: se.trixon.HelloCli
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk
+command: hello
+separate-locales: false
+
+modules:
+  - name: cri
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk/bin/jlink 
+        --verbose 
+        --ignore-signing-information 
+        --no-header-files 
+        --no-man-pages 
+        --strip-debug 
+        --compress zip-9 
+        --module-path /usr/lib/sdk/openjdk/jmods 
+        --add-modules java.base 
+        --output /app/cri
+    build-options:
+      no-debuginfo: true
+
+  - name: the_app
+    buildsystem: simple
+    build-commands:
+      - install -dm755 /app/bin
+      - install -m755 hello /app/bin
+      - install -m755 hello.jar /app/bin
+    sources:
+      - type: file
+        url: https://github.com/trixon/flatpak-java-cri/releases/download/v0/hello-cli-0.1-SNAPSHOT.jar
+        sha256: 89ee9902259fe971d68285e9310c01f212906c7ea31d312b82565fac3e3057b6
+        dest-filename: hello.jar
+      - type: script
+        dest-filename: hello
+        commands:
+          - exec /app/cri/bin/java -jar /app/bin/hello.jar
+    build-options:
+      no-debuginfo: true
