@@ -1,0 +1,49 @@
+id: se.trixon.HelloFx
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk
+  - org.freedesktop.Sdk.Extension.openjfx
+command: hello
+separate-locales: false
+
+finish-args:
+  - --device=dri
+  - --filesystem=home
+  - --socket=x11
+
+modules:
+  - name: cri
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk/bin/jlink 
+        --verbose 
+        --ignore-signing-information 
+        --no-header-files 
+        --no-man-pages 
+        --strip-debug 
+        --compress zip-9 
+        --module-path /usr/lib/sdk/openjfx/jmods 
+        --add-modules javafx.controls
+        --output /app/cri
+    build-options:
+      no-debuginfo: true
+
+  - name: the_app
+    buildsystem: simple
+    build-commands:
+      - install -dm755 /app/bin
+      - install -m755 hello /app/bin
+      - install -m755 hello.jar /app/bin
+    sources:
+      - type: file
+        url: https://github.com/trixon/flatpak-java-cri/releases/download/v0/hello-fx-0.1-SNAPSHOT.jar
+        sha256: d809d4f3eefdc8ba94addb03d62b2bbad230763b017fdb83813d7fce11b52f0a
+        dest-filename: hello.jar
+      - type: script
+        dest-filename: hello
+        commands:
+          - exec /app/cri/bin/java -jar /app/bin/hello.jar
+    build-options:
+      no-debuginfo: true
