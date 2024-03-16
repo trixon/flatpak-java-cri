@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2024 Patrik Karlström <patrik@trixon.se> -->
+<component type="runtime">
+    <id>org.freedesktop.Sdk.Extension.openjfx</id>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-2.0 AND GPL-2.0-with-classpath-exception</project_license>
+    <name>OpenJFX SDK Extension</name>
+    <summary>The latest version of the OpenJFX jmods</summary>
+    <description>
+        <p>
+            This SDK extension allows the building JavaFX applications.
+        </p>
+    </description>
+    <url type="homepage">https://openjdk.java.net/</url>
+    <url type="bugtracker">https://bugs.openjdk.java.net/</url>
+    <developer_name>Patrik Karlström</developer_name>
+    <update_contact>patrik@trixon.se</update_contact>
+    <releases>
+        <release version="jfx-21.0.2+13" date="2024-01-23"/>
+    </releases>
+</component>
